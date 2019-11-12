@@ -1,0 +1,12 @@
+[submodule "module/Midnet"]
+	path = module/Midnet
+	url = https://github.com/comcduarte/midnetModule.git
+[submodule "module/User"]
+	path = module/User
+	url = https://github.com/comcduarte/userModule.git
+[submodule "module/Report"]
+	path = module/Report
+	url = https://github.com/comcduarte/reportModule.git
+[submodule "module/Annotation"]
+	path = module/Annotation
+	url = https://github.com/comcduarte/annotationModule.git

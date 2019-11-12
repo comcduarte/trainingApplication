@@ -1,47 +1,58 @@
 {
-    "name": "comcduarte/training-application",
-    "description": "Track employee training attendance",
-    "type": "project",
-    "license": "BSD-3-Clause",
-    "keywords": [
-        "training",
-        "employee"
-    ],
-    "homepage": "https://training.middletownct.gov/",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "php": "^5.6 || ^7.0",
-        "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
-        "zendframework/zend-mvc": "^3.0.1",
-        "zfcampus/zf-development-mode": "^3.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Application\\": "module/Application/src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ApplicationTest\\": "module/Application/test/"
-        }
-    },
-    "extra": [],
-    "scripts": {
-        "cs-check": "phpcs",
-        "cs-fix": "phpcbf",
-        "development-disable": "zf-development-mode disable",
-        "development-enable": "zf-development-mode enable",
-        "development-status": "zf-development-mode status",
-        "post-create-project-cmd": "@development-enable",
-        "serve": "php -S 0.0.0.0:8080 -t public public/index.php",
-        "test": "phpunit"
-    },
-    "authors": [
-        {
-            "name": "Christopher Duarte",
-            "email": "christopher.duarte@middletownct.gov",
-            "role": "Software Engineer"
-        }
-    ]
+	"name" : "comcduarte/training-application",
+	"description" : "Track employee training attendance",
+	"type" : "project",
+	"license" : "BSD-3-Clause",
+	"keywords" : [
+		"training",
+		"employee"
+	],
+	"homepage" : "https://training.middletownct.gov/",
+	"minimum-stability" : "dev",
+	"prefer-stable" : true,
+	"require" : {
+		"php" : "^5.6 || ^7.0",
+		"zendframework/zend-component-installer" : "^1.0 || ^0.7 || ^1.0.0-dev@dev",
+		"zendframework/zend-mvc" : "^3.0.1",
+		"zfcampus/zf-development-mode" : "^3.0",
+		"zendframework/zend-navigation" : "~2.9",
+		"zendframework/zend-mvc-i18n" : "~1.1",
+		"zendframework/zend-mvc-plugin-flashmessenger" : "~1.2",
+		"zendframework/zend-form" : "2.12.0",
+		"zendframework/zend-db" : "~2.10",
+		"zendframework/zend-session" : "~2.9",
+		"zendframework/zend-authentication" : "~2.7",
+		"zendframework/zend-crypt" : "~3.3",
+		"zendframework/zend-paginator" : "~2.8"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Application\\" : "module/Application/src/",
+			"Midnet\\" : "module/Midnet/src/",
+			"User\\" : "module/User/src/",
+			"Annotation\\" : "module/Annotation/src/",
+			"Report\\" : "module/Report/src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"ApplicationTest\\" : "module/Application/test/"
+		}
+	},
+	"scripts" : {
+		"cs-check" : "phpcs",
+		"cs-fix" : "phpcbf",
+		"development-disable" : "zf-development-mode disable",
+		"development-enable" : "zf-development-mode enable",
+		"development-status" : "zf-development-mode status",
+		"post-create-project-cmd" : "@development-enable",
+		"serve" : "php -S 0.0.0.0:8080 -t public public/index.php",
+		"test" : "phpunit"
+	},
+	"authors" : [{
+			"name" : "Christopher Duarte",
+			"email" : "christopher.duarte@middletownct.gov",
+			"role" : "Software Engineer"
+		}
+	]
 }
