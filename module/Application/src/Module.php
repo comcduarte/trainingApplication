@@ -9,7 +9,8 @@ namespace Application;
 
 class Module
 {
-    const VERSION = '3.0.3-dev';
+    const VERSION = 'DEV';
+    const TITLE = "Training Attendance";
 
     public function getConfig()
     {

@@ -15,23 +15,25 @@
 		"zendframework/zend-component-installer" : "^1.0 || ^0.7 || ^1.0.0-dev@dev",
 		"zendframework/zend-mvc" : "^3.0.1",
 		"zfcampus/zf-development-mode" : "^3.0",
-		"zendframework/zend-navigation" : "~2.9",
-		"zendframework/zend-mvc-i18n" : "~1.1",
-		"zendframework/zend-mvc-plugin-flashmessenger" : "~1.2",
+		"zendframework/zend-navigation" : "*",
+		"zendframework/zend-mvc-plugin-flashmessenger" : "*",
 		"zendframework/zend-form" : "2.12.0",
-		"zendframework/zend-db" : "~2.10",
-		"zendframework/zend-session" : "~2.9",
-		"zendframework/zend-authentication" : "~2.7",
-		"zendframework/zend-crypt" : "~3.3",
-		"zendframework/zend-paginator" : "~2.8"
+		"zendframework/zend-db" : "*",
+		"zendframework/zend-session" : "*",
+		"zendframework/zend-authentication" : "*",
+		"zendframework/zend-crypt" : "*",
+		"zendframework/zend-paginator" : "*",
+		"zendframework/zend-i18n" : "*",
+		"zendframework/zend-permissions-acl" : "*"
 	},
 	"autoload" : {
 		"psr-4" : {
 			"Application\\" : "module/Application/src/",
 			"Midnet\\" : "module/Midnet/src/",
-			"User\\" : "module/User/src/",
 			"Annotation\\" : "module/Annotation/src/",
-			"Report\\" : "module/Report/src/"
+			"Report\\" : "module/Report/src/",
+			"Acl\\" : "module/Acl/src",
+			"User\\" : "module/User/src"
 		}
 	},
 	"autoload-dev" : {

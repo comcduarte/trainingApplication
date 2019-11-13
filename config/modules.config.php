@@ -15,7 +15,6 @@ return [
     'Zend\Db',
     'Zend\Mvc\Plugin\FlashMessenger',
     'Zend\Session',
-    'Zend\Mvc\I18n',
     'Zend\I18n',
     'Zend\Navigation',
     'Zend\Form',
@@ -25,4 +24,9 @@ return [
     'Zend\Router',
     'Zend\Validator',
     'Application',
+    'Midnet',
+    'Acl',
+    'Annotation',
+    'Report',
+    'User',
 ];
