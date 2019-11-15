@@ -34,7 +34,8 @@
 			"Report\\" : "module/Report/src/",
 			"Acl\\" : "module/Acl/src",
 			"User\\" : "module/User/src",
-			"Employee\\" : "module/Employee/src"
+			"Employee\\" : "module/Employee/src",
+			"Training\\" : "module/Training/src"
 		}
 	},
 	"autoload-dev" : {

@@ -30,4 +30,5 @@ return [
     'Report',
     'User',
     'Employee',
+    'Training',
 ];
