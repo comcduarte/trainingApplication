@@ -18,6 +18,43 @@
         </div>  
     </div>
     <div class="col-md-6">
-    	<?php echo $this->partial('workflow/partials/assoc_tasks.phtml', ['workflow' => $this->uuid, 'taskform' => $this->taskform]); ?>
+    	<?php echo $this->partial('midnet/subtable', [
+    	    'title' => 'Employee Roster',
+    	    'data' => $this->roster,
+    	    'primary_key' => 'UUID',
+    	    'route' => 'training/default',
+    	    'params' => [
+    	        [
+    	            'key' => 'UUID_E',
+    	            'action' => 'update',
+    	            'route' => 'employee/default',
+    	            'label' => 'Update',
+    	        ],
+    	        [
+    	            'key' => 'UUID',
+    	            'action' => 'unassign',
+    	            'route' => 'training/default',
+    	            'label' => 'Unassign',
+    	        ],
+    	    ],
+    	])?>
     </div>
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalForm" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<?php 
+		$employee_classes_form->prepare();
+		$employee_classes_form->setAttribute('action', $this->url('training/default', ['action' => 'assign']));
+		
+		$employee_classes_form->get('CLASS')->setAttributes(['value' => $this->uuid]);
+		
+		echo $this->form()->openTag($employee_classes_form);
+		echo $this->formCollection($employee_classes_form);
+		echo $this->form()->closeTag($employee_classes_form);
+		?>
+		</div>
+	</div>
 </div>

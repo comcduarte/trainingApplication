@@ -1,14 +1,17 @@
 <?php 
 
+use Midnet\View\Helper\Functions;
 use Training\Controller\TrainingConfigController;
 use Training\Controller\TrainingController;
 use Training\Controller\Factory\TrainingConfigControllerFactory;
 use Training\Controller\Factory\TrainingControllerFactory;
 use Training\Form\TrainingForm;
+use Training\Form\Factory\EmployeeClassesFormFactory;
 use Training\Form\Factory\TrainingFormFactory;
 use Training\Service\Factory\TrainingModelPrimaryAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -60,6 +63,7 @@ return [
     'form_elements' => [
         'factories' => [
             TrainingForm::class => TrainingFormFactory::class,
+            EmployeeClassForm::class => EmployeeClassesFormFactory::class,
         ],
     ],
     'navigation' => [
@@ -101,6 +105,14 @@ return [
         ],
         'factories' => [
             'training-model-primary-adapter' => TrainingModelPrimaryAdapterFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'aliases' => [
+            'functions' => Functions::class,
+        ],
+        'factories' => [
+            Functions::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

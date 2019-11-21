@@ -4,6 +4,7 @@ namespace Training\Controller\Factory;
 use Interop\Container\ContainerInterface;
 use Midnet\Model\Uuid;
 use Training\Controller\TrainingController;
+use Training\Form\EmployeeClassesForm;
 use Training\Form\TrainingForm;
 use Training\Model\TrainingModel;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -29,6 +30,14 @@ class TrainingControllerFactory implements FactoryInterface
         
         $form = $container->get('FormElementManager')->get(TrainingForm::class);
         $controller->setForm($form);
+        
+//         $employee_classes_form = $container->get('FormElementManager')->get(EmployeeClassesForm::class);
+        
+        $employee_classes_form = new EmployeeClassesForm($uuid->generate()->value);
+        $employee_classes_form->setDbAdapter($adapter);
+        $employee_classes_form->initialize();
+                
+        $controller->EmployeeClassesForm = $employee_classes_form;
         return $controller;
     }
 }

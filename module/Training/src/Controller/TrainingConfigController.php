@@ -23,6 +23,7 @@ class TrainingConfigController extends AbstractConfigController
         $ddl = [];
         
         $ddl[] = new DropTable('classes');
+        $ddl[] = new DropTable('employee_classes');
         
         foreach ($ddl as $obj) {
             $this->adapter->query($sql->buildSqlString($obj), $this->adapter::QUERY_MODE_EXECUTE);
@@ -47,6 +48,21 @@ class TrainingConfigController extends AbstractConfigController
         $ddl->addColumn(new Varchar('NAME', 255));
         $ddl->addColumn(new Varchar('CATEGORY', 255));
         $ddl->addColumn(new Varchar('DATE_SCHEDULE', 255));
+        
+        $ddl->addConstraint(new PrimaryKey('UUID'));
+        
+        $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
+        unset($ddl);
+        
+        /******************************
+         * EMPLOYEE_CLASSES
+         ******************************/
+        $ddl = new CreateTable('employee_classes');
+        
+        $ddl->addColumn(new Varchar('UUID', 36));
+
+        $ddl->addColumn(new Varchar('EMP_UUID', 36));
+        $ddl->addColumn(new Varchar('CLASS_UUID', 36));
         
         $ddl->addConstraint(new PrimaryKey('UUID'));
         
