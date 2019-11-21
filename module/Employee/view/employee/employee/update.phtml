@@ -17,4 +17,20 @@
         <?php echo $this->form()->closeTag($this->form); ?>
         </div>  
     </div>
+    <div class="col-md-6">
+    	<?php echo $this->partial('midnet/subtable', [
+    	    'title' => 'Classes',
+    	    'data' => $this->classes,
+    	    'primary_key' => 'UUID',
+    	    'route' => 'training/default',
+    	    'params' => [
+    	        [
+    	            'key' => 'UUID_C',
+    	            'action' => 'update',
+    	            'route' => 'training/default',
+    	            'label' => 'Open',
+    	        ],
+    	    ],
+    	])?>
+    </div>
 </div>
