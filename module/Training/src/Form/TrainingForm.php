@@ -3,6 +3,7 @@ namespace Training\Form;
 
 use Midnet\Form\AbstractBaseForm;
 use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Form\Element\File;
 use Zend\Form\Element\Text;
 
 class TrainingForm extends AbstractBaseForm
@@ -40,6 +41,19 @@ class TrainingForm extends AbstractBaseForm
         ],['priority' => 100]);
         
         $this->add([
+            'name' => 'INSTRUCTOR',
+            'type' => Text::class,
+            'attributes' => [
+                'id' => 'INSTRUCTOR',
+                'class' => 'form-control',
+                'required' => 'true',
+            ],
+            'options' => [
+                'label' => 'Instructor',
+            ],
+        ],['priority' => 100]);
+        
+        $this->add([
             'name' => 'CATEGORY',
             'type' => Text::class,
             'attributes' => [
@@ -49,6 +63,19 @@ class TrainingForm extends AbstractBaseForm
             ],
             'options' => [
                 'label' => 'Session Category',
+            ],
+        ],['priority' => 100]);
+        
+        $this->add([
+            'name' => 'FILE',
+            'type' => File::class,
+            'attributes' => [
+                'id' => 'FILE',
+                'class' => 'form-control',
+                'required' => 'true',
+            ],
+            'options' => [
+                'label' => 'File',
             ],
         ],['priority' => 100]);
         

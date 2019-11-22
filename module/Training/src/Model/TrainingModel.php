@@ -3,15 +3,17 @@ namespace Training\Model;
 
 use Midnet\Model\DatabaseObject;
 use Midnet\Model\Uuid;
+use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
+use Zend\InputFilter\InputFilter;
 use RuntimeException;
-use Zend\Db\Sql\Delete;
 
 class TrainingModel extends DatabaseObject
 {
     public $CODE;
     public $NAME;
+    public $INSTRUCTOR;
     public $CATEGORY;
     public $DATE_SCHEDULE;
     
@@ -75,4 +77,34 @@ class TrainingModel extends DatabaseObject
         return $this;
     }
     
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $inputFilter = parent::getInputFilter();
+        
+        $inputFilter->add([
+            'name' => 'FILE',
+            'required' => FALSE,
+            'filters' => [
+                [
+                    'name' => 'filerenameupload',
+                    'options' => [
+                        'target'    => './data/pdf/' . $this->UUID . '.pdf',
+                        'overwrite' => TRUE,
+                        'randomize' => FALSE,
+                    ],
+                ],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'FileMimeType',
+                    'options' => [
+                        'mimeType'  => ['application/pdf']
+                    ]
+                ],
+            ],
+        ]);
+        
+        return $inputFilter;
+    }
 }

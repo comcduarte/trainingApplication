@@ -46,6 +46,7 @@ class TrainingConfigController extends AbstractConfigController
         
         $ddl->addColumn(new Varchar('CODE', 255));
         $ddl->addColumn(new Varchar('NAME', 255));
+        $ddl->addColumn(new Varchar('INSTRUCTOR', 255));
         $ddl->addColumn(new Varchar('CATEGORY', 255, TRUE));
         $ddl->addColumn(new Varchar('DATE_SCHEDULE', 255, TRUE));
         
