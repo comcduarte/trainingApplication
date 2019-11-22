@@ -23,6 +23,7 @@ class EmployeeConfigController extends AbstractConfigController
         $ddl = [];
         
         $ddl[] = new DropTable('employees');
+        $ddl[] = new DropTable('departments');
         
         foreach ($ddl as $obj) {
             $this->adapter->query($sql->buildSqlString($obj), $this->adapter::QUERY_MODE_EXECUTE);
@@ -46,12 +47,32 @@ class EmployeeConfigController extends AbstractConfigController
         $ddl->addColumn(new Varchar('EMP_NUM', 255));
         $ddl->addColumn(new Varchar('FNAME', 255));
         $ddl->addColumn(new Varchar('LNAME', 255));
-        $ddl->addColumn(new Varchar('EMAIL', 255));
-        $ddl->addColumn(new Varchar('DEPT', 255));
+        $ddl->addColumn(new Varchar('EMAIL', 255, TRUE));
+        $ddl->addColumn(new Varchar('DEPT', 255, TRUE));
         
         $ddl->addConstraint(new PrimaryKey('UUID'));
         
         $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
         unset($ddl);
+        
+        /******************************
+         * DEPARTMENTS
+         ******************************/
+        $ddl = new CreateTable('departments');
+        
+        $ddl->addColumn(new Varchar('UUID', 36));
+        $ddl->addColumn(new Integer('STATUS', TRUE));
+        $ddl->addColumn(new Datetime('DATE_CREATED', TRUE));
+        $ddl->addColumn(new Datetime('DATE_MODIFIED', TRUE));
+        
+        $ddl->addColumn(new Varchar('CODE', 10));
+        $ddl->addColumn(new Varchar('NAME', 255));
+        $ddl->addColumn(new Varchar('PARENT', 36, TRUE));
+        
+        $ddl->addConstraint(new PrimaryKey('UUID'));
+        
+        $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
+        unset($ddl);
+        
     }
 }

@@ -9,10 +9,37 @@ use Employee\Service\Factory\EmployeeModelPrimaryAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Employee\Controller\Factory\EmployeeConfigControllerFactory;
+use Employee\Controller\DepartmentController;
+use Employee\Controller\Factory\DepartmentControllerFactory;
 
 return [
     'router' => [
         'routes' => [
+            'department' => [
+                'type' => Literal::class,
+                'priority' => 1,
+                'options' => [
+                    'route' => '/department',
+                    'defaults' => [
+                        'action' => 'index',
+                        'controller' => DepartmentController::class,
+                    ]
+                ],
+                'may_terminate' => FALSE,
+                'child_routes' => [
+                    'default' => [
+                        'type' => Segment::class,
+                        'priority' => -100,
+                        'options' => [
+                            'route' => '/[:action[/:uuid]]',
+                            'defaults' => [
+                                'action' => 'index',
+                                'controller' => DepartmentController::class,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'employee' => [
                 'type' => Literal::class,
                 'priority' => 1,
@@ -52,7 +79,12 @@ return [
         ],
     ],
     'controllers' => [
+        'aliases' => [
+            'department' => DepartmentController::class,
+            'employee' => EmployeeController::class,
+        ],
         'factories' => [
+            DepartmentController::class => DepartmentControllerFactory::class,
             EmployeeController::class => EmployeeControllerFactory::class,
             EmployeeConfigController::class => EmployeeConfigControllerFactory::class,
         ],
@@ -69,6 +101,26 @@ return [
                 'route' => 'home',
                 'class' => 'dropdown',
                 'pages' => [
+                    [
+                        'label' => 'Department Maintenance',
+                        'route' => 'department/default',
+                        'class' => 'dropdown-submenu',
+                        'pages' => [
+                            [
+                                'label' => 'Add Department',
+                                'route' => 'department/default',
+                                'action' => 'create',
+                                'controller' => 'department',
+                            ],
+                            
+                            [
+                                'label' => 'List Departments',
+                                'route' => 'department/default',
+                                'action' => 'index',
+                                'controller' => 'department',
+                            ],
+                        ],
+                    ],
                     [
                         'label' => 'Employee Maintenance',
                         'route' => 'employee/default',

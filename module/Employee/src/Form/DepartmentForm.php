@@ -6,7 +6,7 @@ use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Form\Element\Text;
 use Midnet\Form\Element\DatabaseSelectObject;
 
-class EmployeeForm extends AbstractBaseForm
+class DepartmentForm extends AbstractBaseForm
 {
     use AdapterAwareTrait;
     
@@ -15,73 +15,46 @@ class EmployeeForm extends AbstractBaseForm
         parent::initialize();
         
         $this->add([
-            'name' => 'EMP_NUM',
+            'name' => 'CODE',
             'type' => Text::class,
             'attributes' => [
-                'id' => 'EMP_NUM',
+                'id' => 'CODE',
                 'class' => 'form-control',
                 'required' => 'true',
             ],
             'options' => [
-                'label' => 'Employee Number',
+                'label' => 'Department Code',
             ],
         ],['priority' => 100]);
         
         $this->add([
-            'name' => 'FNAME',
+            'name' => 'NAME',
             'type' => Text::class,
             'attributes' => [
-                'id' => 'FNAME',
+                'id' => 'NAME',
                 'class' => 'form-control',
                 'required' => 'true',
             ],
             'options' => [
-                'label' => 'First Name',
+                'label' => 'Department Name',
             ],
         ],['priority' => 100]);
         
         $this->add([
-            'name' => 'LNAME',
-            'type' => Text::class,
-            'attributes' => [
-                'id' => 'LNAME',
-                'class' => 'form-control',
-                'required' => 'true',
-            ],
-            'options' => [
-                'label' => 'Last Name',
-            ],
-        ],['priority' => 100]);
-        
-        $this->add([
-            'name' => 'EMAIL',
-            'type' => Text::class,
-            'attributes' => [
-                'id' => 'EMAIL',
-                'class' => 'form-control',
-                'required' => 'true',
-            ],
-            'options' => [
-                'label' => 'Email Address',
-            ],
-        ],['priority' => 100]);
-        
-        $this->add([
-            'name' => 'DEPT',
+            'name' => 'PARENT',
             'type' => DatabaseSelectObject::class,
             'attributes' => [
-                'id' => 'DEPT',
+                'id' => 'PARENT',
                 'class' => 'form-control',
-                'required' => 'true',
             ],
             'options' => [
-                'label' => 'Department',
+                'label' => 'Parent Department',
                 'database_adapter' => $this->adapter,
                 'database_table' => 'departments',
                 'database_id_column' => 'UUID',
                 'database_value_column' => 'NAME',
-                
             ],
         ],['priority' => 100]);
+        
     }
 }
