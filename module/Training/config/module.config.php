@@ -119,6 +119,7 @@ return [
         'template_map' => [
             'training/config' => __DIR__ . '/../view/training/config/index.phtml',
             'related_files' => __DIR__ . '/../view/training/partials/related_files.phtml',
+            'training/reports/' => __DIR__ . '/../view/training/reports/',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
