@@ -72,7 +72,6 @@ class TrainingForm extends AbstractBaseForm
             'attributes' => [
                 'id' => 'FILE',
                 'class' => 'form-control',
-                'required' => 'true',
             ],
             'options' => [
                 'label' => 'File',

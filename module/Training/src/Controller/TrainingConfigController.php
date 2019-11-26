@@ -9,12 +9,23 @@ use Zend\Db\Sql\Ddl\Column\Datetime;
 use Zend\Db\Sql\Ddl\Column\Integer;
 use Zend\Db\Sql\Ddl\Column\Varchar;
 use Zend\Db\Sql\Ddl\Constraint\PrimaryKey;
+use Zend\View\Model\ViewModel;
 
 class TrainingConfigController extends AbstractConfigController
 {
     public function __construct()
     {
         $this->setRoute('training/config');
+    }
+    
+    public function indexAction()
+    {
+        $view = new ViewModel();
+        $view = parent::indexAction();
+        
+        $view->setTemplate('training/config');
+        
+        return $view;
     }
     
     public function clearDatabase()
@@ -46,7 +57,7 @@ class TrainingConfigController extends AbstractConfigController
         
         $ddl->addColumn(new Varchar('CODE', 255));
         $ddl->addColumn(new Varchar('NAME', 255));
-        $ddl->addColumn(new Varchar('INSTRUCTOR', 255));
+        $ddl->addColumn(new Varchar('INSTRUCTOR', 255, TRUE));
         $ddl->addColumn(new Varchar('CATEGORY', 255, TRUE));
         $ddl->addColumn(new Varchar('DATE_SCHEDULE', 255, TRUE));
         
@@ -69,5 +80,19 @@ class TrainingConfigController extends AbstractConfigController
         
         $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
         unset($ddl);
+    }
+    
+    public function createfoldersAction()
+    {
+        $this->createFolders();
+        $this->flashMessenger()->addSuccessMessage("Folders Created.");
+        return $this->redirect()->toRoute($this->getRoute());
+    }
+    
+    public function createFolders()
+    {
+        if (!file_exists('./data/files')) {
+            mkdir('./data/files', 0777, true);
+        }
     }
 }

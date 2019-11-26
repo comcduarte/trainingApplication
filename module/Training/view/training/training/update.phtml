@@ -42,6 +42,21 @@
     	        ],
     	    ],
     	])?>
+    	
+    	<?php echo $this->partial('related_files', [
+    	    'title' => 'Related Files',
+    	    'data' => $this->files,
+    	    'primary_key' => 'UUID',
+    	    'route' => 'training/default',
+    	    'params' => [
+    	        [
+    	            'key' => 'UUID',
+    	            'action' => 'display',
+    	            'route' => 'data',
+    	            'label' => 'View',
+    	        ],
+    	    ],
+    	])?>
     </div>
 </div>
 

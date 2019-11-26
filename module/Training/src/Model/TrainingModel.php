@@ -23,6 +23,26 @@ class TrainingModel extends DatabaseObject
         $this->setTableName('classes');
     }
     
+    public function create()
+    {
+        parent::create();
+        
+        if (!file_exists('./data/files/' . $this->UUID)) {
+            mkdir('./data/files/' . $this->UUID, 0777, true);
+        }
+        
+        return $this;
+    }
+    
+    public function delete()
+    {
+        parent::delete();
+        
+        // TODO: Remove file upload directory and its contents.  Possibly Archive them.
+        
+        return true;
+    }
+    
     public function assignEmployee($employee_uuid)
     {
         $sql = new Sql($this->adapter);
@@ -89,7 +109,9 @@ class TrainingModel extends DatabaseObject
                 [
                     'name' => 'filerenameupload',
                     'options' => [
-                        'target'    => './data/pdf/' . $this->UUID . '.pdf',
+                        'target'    => './data/files/' . $this->UUID,
+                        'useUploadName' => TRUE,
+                        'useUploadExtension' => TRUE,
                         'overwrite' => TRUE,
                         'randomize' => FALSE,
                     ],
@@ -99,7 +121,7 @@ class TrainingModel extends DatabaseObject
                 [
                     'name'    => 'FileMimeType',
                     'options' => [
-                        'mimeType'  => ['application/pdf']
+                        'mimeType'  => ['application/pdf', 'text/plain']
                     ]
                 ],
             ],

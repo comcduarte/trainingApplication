@@ -42,6 +42,23 @@ class TrainingController extends AbstractBaseController
         $view->setVariable('uuid', $this->model->UUID);
         $view->setVariable('roster', $roster);
         
+        /****************************************
+         * FILES SUBTABLE
+         ****************************************/
+        $path = './data/files/' . $this->model->UUID;
+        $files = [];
+        if (file_exists($path)) {
+            $scannedfiles = array_diff(scandir($path), array('.', '..'));
+            
+            foreach ($scannedfiles as $index => $filename) {
+                $files[] = [
+                    'UUID' => $this->model->UUID,
+                    'FILENAME' => $filename,
+                ];
+            }
+        }
+        
+        $view->setVariable('files', $files);
         
         return $view;
     }
