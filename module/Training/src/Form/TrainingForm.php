@@ -3,6 +3,7 @@ namespace Training\Form;
 
 use Midnet\Form\AbstractBaseForm;
 use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Form\Element\DateTimeLocal;
 use Zend\Form\Element\File;
 use Zend\Form\Element\Text;
 
@@ -80,7 +81,7 @@ class TrainingForm extends AbstractBaseForm
         
         $this->add([
             'name' => 'DATE_SCHEDULE',
-            'type' => Text::class,
+            'type' => DateTimeLocal::class,
             'attributes' => [
                 'id' => 'DATE_SCHEDULE',
                 'class' => 'form-control',
