@@ -15,6 +15,39 @@ class TrainingController extends AbstractBaseController
 {
     public $EmployeeClassesForm;
     
+    public function indexAction()
+    {
+        $view = new ViewModel();
+        $view = parent::indexAction();
+        
+        $sql = new Sql($this->adapter);
+        $select = new Select();
+        $select->from('classes');
+        $select->columns([
+            'UUID' => 'UUID',
+            'Code' => 'CODE',
+            'Name' => 'NAME',
+            'Instructor' => 'INSTRUCTOR',
+            'Session' => 'DATE_SCHEDULE',
+        ]);
+        
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        $resultSet = new ResultSet($results);
+        $resultSet->initialize($results);
+        $data = $resultSet->toArray();
+        
+        $header = [];
+        if (!empty($data)) {
+            $header = array_keys($data[0]);
+        }
+        
+        $view->setVariable('header', $header);
+        $view->setVariable('data', $data);
+        
+        return $view;
+    }
+    
     public function updateAction()
     {
         $view = new ViewModel();

@@ -10,6 +10,8 @@ class EmployeeModel extends DatabaseObject
     public $EMAIL;
     public $EMP_NUM;
     public $DEPT;
+    public $TIME_GROUP;
+    public $TIME_SUBGROUP;
     
     public function __construct($adapter = NULL)
     {

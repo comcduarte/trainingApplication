@@ -156,6 +156,9 @@ return [
         ],
     ],
     'view_manager' => [
+        'template_map' => [
+            'employee/config' => __DIR__ . '/../view/employee/config/index.phtml',
+        ],
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
