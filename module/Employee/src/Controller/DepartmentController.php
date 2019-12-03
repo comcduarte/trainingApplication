@@ -23,6 +23,7 @@ class DepartmentController extends AbstractBaseController
             'Code' => 'CODE',
             'Department Name' => 'NAME',
         ]);
+        $select->order('NAME ASC');
         
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();

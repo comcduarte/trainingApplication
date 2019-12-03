@@ -26,6 +26,7 @@ class EmployeeController extends AbstractBaseController
             'Email' => 'EMAIL',
         ]);
         $select->join('departments', 'departments.UUID = employees.DEPT', ['Department' => 'NAME'], Select::JOIN_LEFT);
+        $select->order('LNAME ASC');
         
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
