@@ -11,6 +11,39 @@ use Zend\View\Model\ViewModel;
 
 class EmployeeController extends AbstractBaseController
 {
+    public function indexAction()
+    {
+        $view = new ViewModel();
+        $view = parent::indexAction();
+        
+        $sql = new Sql($this->adapter);
+        $select = new Select();
+        $select->from('employees');
+        $select->columns([
+            'UUID' => 'UUID',
+            'First Name' => 'FNAME',
+            'Last Name' => 'LNAME',
+            'Email' => 'EMAIL',
+        ]);
+        $select->join('departments', 'departments.UUID = employees.DEPT', ['Department' => 'NAME'], Select::JOIN_LEFT);
+        
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        $resultSet = new ResultSet($results);
+        $resultSet->initialize($results);
+        $data = $resultSet->toArray();
+        
+        $header = [];
+        if (!empty($data)) {
+            $header = array_keys($data[0]);
+        }
+        
+        $view->setVariable('header', $header);
+        $view->setVariable('data', $data);
+        
+        return $view;
+    }
+    
     public function updateAction()
     {
         $view = new ViewModel();
