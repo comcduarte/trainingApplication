@@ -37,24 +37,58 @@ $checks = [
 ];
 ?>
 
-<table class="table table-sm">
-	<thead>
-		<tr>
-			<td>Module One</td>
-		</tr>
-	</thead>
-	<tbody>
-	<?php foreach ($checks as $check) : ?>
-		<tr>
-			<td><?=$check['label']?></td>
-			<td>
-                <div class="checkbox checkbox-slider--b-flat">
-        			<label>
-        				<input type="checkbox" <?=$check['function']?>><span></span>
-        			</label>
+
+<div class="row">
+	<div class="col">
+		<div class="card mb-4">
+			<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Checks</b>
         		</div>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</tbody>
-</table>
+        	</div>
+        	<div class="card-body">
+        		<table class="table table-sm">
+                	<thead>
+                		<tr>
+                			<td>Module One</td>
+                		</tr>
+                	</thead>
+                	<tbody>
+                	<?php foreach ($checks as $check) : ?>
+                		<tr>
+                			<td><?=$check['label']?></td>
+                			<td>
+                                <div class="checkbox checkbox-slider--b-flat">
+                        			<label>
+                        				<input type="checkbox" <?=$check['function']?>><span></span>
+                        			</label>
+                        		</div>
+                			</td>
+                		</tr>
+                	<?php endforeach; ?>
+                	</tbody>
+                </table>
+        	</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<div class="card mb-4">
+			<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Forms</b>
+        		</div>
+        	</div>
+        	<div class="card-body">
+        		<?php 
+        		$this->importForm->prepare();
+        		$this->importForm->setAttribute('action', $this->url('training/config', ['action' => 'importclasses']));
+        		echo $this->form()->openTag($this->importForm); 
+        		echo $this->formCollection($this->importForm);
+        		echo $this->form()->closeTag($this->importForm);
+        		?>
+        	</div>
+		</div>
+	</div>
+</div>
