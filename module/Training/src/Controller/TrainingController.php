@@ -30,6 +30,7 @@ class TrainingController extends AbstractBaseController
             'Instructor' => 'INSTRUCTOR',
             'Session' => 'DATE_SCHEDULE',
         ]);
+        $select->where(['classes.STATUS' => $this->model::ACTIVE_STATUS]);
         $select->order(['NAME','DATE_SCHEDULE']);
         
         $statement = $sql->prepareStatementForSqlObject($select);

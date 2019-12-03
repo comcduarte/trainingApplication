@@ -25,6 +25,7 @@ class EmployeeController extends AbstractBaseController
             'Last Name' => 'LNAME',
             'Email' => 'EMAIL',
         ]);
+        $select->where(['employees.STATUS' => $this->model::ACTIVE_STATUS]);
         $select->join('departments', 'departments.UUID = employees.DEPT', ['Department' => 'NAME'], Select::JOIN_LEFT);
         $select->order('LNAME ASC');
         

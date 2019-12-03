@@ -23,6 +23,7 @@ class DepartmentController extends AbstractBaseController
             'Code' => 'CODE',
             'Department Name' => 'NAME',
         ]);
+        $select->where(['departments.STATUS' => $this->model::ACTIVE_STATUS]);
         $select->order('NAME ASC');
         
         $statement = $sql->prepareStatementForSqlObject($select);
