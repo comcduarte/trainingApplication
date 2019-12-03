@@ -110,8 +110,8 @@ class TrainingConfigController extends AbstractConfigController
         /****************************************
          * Field Indexes
          ****************************************/
-        $FNAME = 0;
-        $LNAME = 1;
+        $LNAME = 0;
+        $FNAME = 1;
         $EMP_NUM = 2;
         $DEPT = 3;
         $CAT = 4;
