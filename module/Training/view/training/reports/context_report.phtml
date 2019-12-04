@@ -1,0 +1,73 @@
+<?php
+use Report\Form\ReportRequestForm;
+?>
+<div class="card mb-4">
+	<div class="card-header d-flex justify-content-between">
+		<div>
+			<b><?=$this->title?></b>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<?php if (sizeof($data) === 0) { echo "No Records Retrieved."; } else { ?>
+    	<table class="table table-striped">
+        	<thead>
+        		<tr>
+        	<?php 
+        	   $header = array_keys($this->data[0]); 
+        	   foreach ($header as $key) {
+        	       if (strpos($key, $this->primary_key) === 0 ) { continue; }
+        	       echo "<th>$key</th>";
+        	   }
+           ?>
+           			<th></th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<?php foreach ($this->data as $record) : ?>
+        		<tr>
+        			<?php foreach ($record as $key => $value) : ?>
+        				<?php if (strpos($key, $this->primary_key) === 0 ) { continue; } ?>
+        				<td><?php echo $value; ?></td>
+        			<?php endforeach; ?>
+        			<td class="float-right">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            	<i class="fas fa-bars"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <?php 
+                            foreach ($this->params as $item) {
+                                /****************************************
+                                 * Replacing dropdown hyperlink with form submit
+                                 ****************************************/
+                                $form = new ReportRequestForm($record['key']);
+                                $form->num_vars = 1;
+                                $form->initialize();
+                                $form->get('UUID')->setValue($record[$item['key']]);
+                                $form->get('SUBMIT')->setValue($item['label']);
+                                
+                                foreach ($item['vars'] as $field => $value) {
+                                    $form->get($field)->setValue($value);
+                                }
+                                
+                                $form->prepare();
+                                $form->setAttribute('action', $this->url($item['route'], ['action' => $item['action']]));
+                                $form->setAttribute('target', '_blank');
+                                echo $this->form()->openTag($form);
+                                echo $this->formCollection($form);
+                                echo $this->form()->closeTag($form);
+                                
+//                                 echo $this->functions($item['route'], $item['action'], $record[$item['key']], $item['label']);
+                            }
+                            ?>
+                            </div>
+                        </div>
+        			</td>
+        		</tr>
+        		<?php endforeach; ?>
+        	</tbody>
+    	</table>
+    	<?php } ?>
+	</div>
+</div>
