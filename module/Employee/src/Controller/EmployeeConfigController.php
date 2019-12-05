@@ -3,8 +3,11 @@ namespace Employee\Controller;
 
 use Employee\Form\UploadFileForm;
 use Employee\Model\DepartmentModel;
+use Employee\Model\EmployeeModel;
 use Midnet\Controller\AbstractConfigController;
 use Midnet\Model\Uuid;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Ddl\CreateTable;
 use Zend\Db\Sql\Ddl\DropTable;
@@ -13,7 +16,6 @@ use Zend\Db\Sql\Ddl\Column\Integer;
 use Zend\Db\Sql\Ddl\Column\Varchar;
 use Zend\Db\Sql\Ddl\Constraint\PrimaryKey;
 use Zend\View\Model\ViewModel;
-use Employee\Model\EmployeeModel;
 
 class EmployeeConfigController extends AbstractConfigController
 {
@@ -99,6 +101,42 @@ class EmployeeConfigController extends AbstractConfigController
         
     }
 
+    public function reconciledirectoriesAction()
+    {
+        $sql = new Sql($this->adapter);
+        $select = new Select();
+        
+        $tables = [
+            'employees',
+            'classes',
+        ];
+        
+        foreach ($tables as $table) {
+            $select->from($table);
+            $select->columns([
+                'UUID' => 'UUID',
+            ]);
+            
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $results = $statement->execute();
+            $resultSet = new ResultSet($results);
+            $resultSet->initialize($results);
+            $data = $resultSet->toArray();
+            
+            foreach ($data as $record) {
+                if (!file_exists('./data/files/' . $record['UUID'])) {
+                    mkdir('./data/files/' . $record['UUID'], 0777, true);
+                    $this->flashmessenger()->addSuccessMessage($record['UUID'] . ' folder created.');
+                }
+            }
+            
+            unset($data);
+        }
+        $url = $this->getRequest()->getHeader('Referer')->getUri();
+        return $this->redirect()->toUrl($url);
+    }
+    
+    
     public function importemployeesAction()
     {
         $EMP_NUM = 0;

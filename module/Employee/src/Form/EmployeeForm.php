@@ -2,9 +2,10 @@
 namespace Employee\Form;
 
 use Midnet\Form\AbstractBaseForm;
-use Zend\Db\Adapter\AdapterAwareTrait;
-use Zend\Form\Element\Text;
 use Midnet\Form\Element\DatabaseSelectObject;
+use Zend\Db\Adapter\AdapterAwareTrait;
+use Zend\Form\Element\File;
+use Zend\Form\Element\Text;
 
 class EmployeeForm extends AbstractBaseForm
 {
@@ -81,6 +82,18 @@ class EmployeeForm extends AbstractBaseForm
                 'database_id_column' => 'UUID',
                 'database_value_column' => 'NAME',
                 
+            ],
+        ],['priority' => 100]);
+        
+        $this->add([
+            'name' => 'FILE',
+            'type' => File::class,
+            'attributes' => [
+                'id' => 'FILE',
+                'class' => 'form-control',
+            ],
+            'options' => [
+                'label' => 'File',
             ],
         ],['priority' => 100]);
     }

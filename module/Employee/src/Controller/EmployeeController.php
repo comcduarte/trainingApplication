@@ -50,6 +50,7 @@ class EmployeeController extends AbstractBaseController
     {
         $view = new ViewModel();
         $view = parent::updateAction();
+        $view->setVariable('uuid', $this->model->UUID);
         
         /****************************************
          * CLASSES SUBTABLE
@@ -70,6 +71,45 @@ class EmployeeController extends AbstractBaseController
         $classes = $resultSet->toArray();
         
         $view->setVariable('classes', $classes);
+        
+        /****************************************
+         * FILES SUBTABLE
+         ****************************************/
+        $path = './data/files/' . $this->model->UUID;
+        $files = [];
+        if (file_exists($path)) {
+            $scannedfiles = array_diff(scandir($path), array('.', '..'));
+            
+            foreach ($scannedfiles as $index => $filename) {
+                $files[] = [
+                    'UUID' => $this->model->UUID,
+                    'FILENAME' => $filename,
+                ];
+            }
+        }
+        
+        $view->setVariable('files', $files);
+        
+        /****************************************
+         * REPORTS SUBTABLE
+         ****************************************/
+        $reports = [];
+        
+        $sql = new Sql($this->adapter);
+        $select = new Select();
+        $select->columns(['UUID', 'NAME'])
+        ->from('reports')
+        ->where([new Like('NAME', 'EMP - %')]);
+        
+        $statement = $sql->prepareStatementForSqlObject($select);
+        
+        $results = $statement->execute();
+        $resultSet = new ResultSet($results);
+        $resultSet->initialize($results);
+        $reports = $resultSet->toArray();
+        
+        $view->setVariable('reports', $reports);
+        
         return $view;
     }
 }

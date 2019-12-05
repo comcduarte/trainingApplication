@@ -118,7 +118,7 @@ return [
     'view_manager' => [
         'template_map' => [
             'training/config' => __DIR__ . '/../view/training/config/index.phtml',
-            'training/context_report' => __DIR__ . '/../view/training/reports/context_report.phtml',
+            'training/context_report' => __DIR__ . '/../view/training/partials/context_report.phtml',
             'related_files' => __DIR__ . '/../view/training/partials/related_files.phtml',
             'training/reports/' => __DIR__ . '/../view/training/reports/',
         ],
