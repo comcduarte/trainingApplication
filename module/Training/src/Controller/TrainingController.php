@@ -140,6 +140,13 @@ class TrainingController extends AbstractBaseController
                 $employee_uuid = $data['EMP'];
                 
                 $model->read(['UUID' => $class_uuid]);
+                
+                /****************************************
+                 * HISTORY
+                 ****************************************/
+                $user = $this->currentUser();
+                $model->setCurrentUser($user->USERNAME);
+                
                 $model->assignEmployee($employee_uuid);
                 $model->update();
             }
@@ -153,7 +160,15 @@ class TrainingController extends AbstractBaseController
     public function unassignAction()
     {
         $join_uuid = $this->params()->fromRoute('uuid',0);
+        
+        /****************************************
+         * HISTORY
+         ****************************************/
+        $user = $this->currentUser();
+        $this->model->setCurrentUser($user->USERNAME);
+        
         $this->model->unassignEmployee($join_uuid);
+        
         $url = $this->getRequest()->getHeader('Referer')->getUri();
         return $this->redirect()->toUrl($url);
     }

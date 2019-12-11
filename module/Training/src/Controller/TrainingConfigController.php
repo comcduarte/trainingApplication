@@ -163,6 +163,7 @@ class TrainingConfigController extends AbstractConfigController
                                 $employee->DATE_CREATED = $today;
                                 $employee->DATE_MODIFIED = $today;
                                 $employee->STATUS = $employee::ACTIVE_STATUS;
+                                $employee->setCurrentUser('SYSTEM');
                                 $employee->create();
                             }
                         } else {
@@ -192,6 +193,7 @@ class TrainingConfigController extends AbstractConfigController
                                 $employee->DATE_CREATED = $today;
                                 $employee->DATE_MODIFIED = $today;
                                 $employee->STATUS = $employee::ACTIVE_STATUS;
+                                $employee->setCurrentUser('SYSTEM');
                                 $employee->create();
                             }
                         }
@@ -215,6 +217,7 @@ class TrainingConfigController extends AbstractConfigController
                             $class->DATE_SCHEDULE = date('Y-m-d', strtotime($record[$DATE])) . 'T12:00';
                             $class->CATEGORY = $record[$CAT];
                             $class->NAME = $record[$NAME];
+                            $class->setCurrentUser('SYSTEM');
                             $class->create();
                         }
                         

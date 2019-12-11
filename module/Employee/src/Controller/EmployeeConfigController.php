@@ -185,6 +185,7 @@ class EmployeeConfigController extends AbstractConfigController
                             $dept->DATE_CREATED = $today;
                             $dept->DATE_MODIFIED = $today;
                             $dept->STATUS = $dept::ACTIVE_STATUS;
+                            $dept->setCurrentUser('SYSTEM');
                             $dept->create();
                         }
                         $current_dept = $dept->UUID;
@@ -206,6 +207,7 @@ class EmployeeConfigController extends AbstractConfigController
                             $emp->DATE_CREATED = $today;
                             $emp->DATE_MODIFIED = $today;
                             $emp->STATUS = $emp::ACTIVE_STATUS;
+                            $emp->setCurrentUser('SYSTEM');
                             $create_result = $emp->create();
                         }
                         $row++;

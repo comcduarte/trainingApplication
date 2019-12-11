@@ -2,6 +2,7 @@
 namespace Training\Model;
 
 use Midnet\Model\DatabaseObject;
+use Midnet\Model\HistoryModel;
 use Midnet\Model\Uuid;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Sql\Insert;
@@ -68,6 +69,13 @@ class TrainingModel extends DatabaseObject
         
         $statement = $sql->prepareStatementForSqlObject($insert);
         
+        $history = new HistoryModel($this->adapter);
+        $history->ACTION = "ASSIGN";
+        $history->USER = $this->current_user;
+        $history->TABLENAME = $this->getTableName();
+        $history->statement = $statement;
+        $history->record();
+        
         try {
             $statement->execute();
         } catch (RuntimeException $e) {
@@ -88,6 +96,13 @@ class TrainingModel extends DatabaseObject
         }
         
         $statement = $sql->prepareStatementForSqlObject($delete);
+        
+        $history = new HistoryModel($this->adapter);
+        $history->ACTION = "UNASSIGN";
+        $history->USER = $this->current_user;
+        $history->TABLENAME = $this->getTableName();
+        $history->statement = $statement;
+        $history->record();
         
         try {
             $statement->execute();
