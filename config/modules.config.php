@@ -25,7 +25,7 @@ return [
     'Zend\Validator',
     'Application',
     'Midnet',
-//     'Acl',
+    'Acl',
     'Annotation',
     'Report',
     'User',

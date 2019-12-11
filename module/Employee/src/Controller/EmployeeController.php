@@ -1,13 +1,17 @@
 <?php
 namespace Employee\Controller;
 
+use Employee\Form\FindEmployeeForm;
+use Employee\Model\EmployeeModel;
 use Midnet\Controller\AbstractBaseController;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Join;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Db\Sql\Predicate\Like;
 use Zend\View\Model\ViewModel;
+use Exception;
 
 class EmployeeController extends AbstractBaseController
 {
@@ -110,6 +114,66 @@ class EmployeeController extends AbstractBaseController
         
         $view->setVariable('reports', $reports);
         
+        return $view;
+    }
+
+    public function findAction()
+    {
+        $view = new ViewModel();
+        $view->setTemplate('employee/employee/index');
+        
+        $model = new EmployeeModel($this->adapter);
+        $form = new FindEmployeeForm();
+        
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            
+            $data = $request->getPost();
+            $form->setData($data);
+            
+            if ($form->isValid()) {
+                $sql = new Sql($this->adapter);
+                
+                $select = new Select();
+                $select->from($model->getTableName());
+                $select->columns(['UUID','FNAME','LNAME']);
+                $select->order('LNAME DESC');
+                
+                $search_string = NULL;
+                if (stripos($data['LNAME'],'%')) {
+                    $search_string = $data['LNAME'];
+                } else {
+                    $search_string = '%' . $data['LNAME'] . '%';
+                }
+                
+                $predicate = new Where();
+                $predicate->like('LNAME', $search_string);
+                
+                $select->where($predicate);
+                $select->order('LNAME');
+                
+                $statement = $sql->prepareStatementForSqlObject($select);
+                $resultSet = new ResultSet();
+                
+                try {
+                    $results = $statement->execute();
+                    $resultSet->initialize($results);
+                } catch (Exception $e) {
+                    return $e;
+                }
+                
+                $employees = $resultSet->toArray();
+            }
+        }
+        
+        $header = [];
+        if (!empty($data)) {
+            $header = array_keys($employees[0]);
+        }
+        
+        $view->setVariable('header', $header);
+        $view->setVariable('data', $employees);
+        $view->setVariable('primary_key', $model->getPrimaryKey());
         return $view;
     }
 }

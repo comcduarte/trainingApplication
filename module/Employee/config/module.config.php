@@ -78,6 +78,24 @@ return [
             ],
         ],
     ],
+    'acl' => [
+        'guest' => [
+        ],
+        'member' => [
+            'employee/default' => ['index','create','update','delete','find'],
+            'employee/config' => ['index','clear','create', 'reconciledirectories','importemployees'],
+            'department/default' => ['index','create','update','delete'],
+        ],
+    ],
+    'controller_plugins' => [
+        'factories' => [
+            \User\Controller\Plugin\CurrentUser::class => \User\Controller\Plugin\Factory\CurrentUserFactory::class,
+        ],
+        'aliases' => [
+            'currentUser' => \User\Controller\Plugin\CurrentUser::class,
+        ],
+        
+    ],
     'controllers' => [
         'aliases' => [
             'department' => DepartmentController::class,

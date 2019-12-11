@@ -12,6 +12,7 @@ use Training\Service\Factory\TrainingModelPrimaryAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Training\Form\Factory\FindTrainingFormFactory;
 
 return [
     'router' => [
@@ -52,6 +53,14 @@ return [
                     ],
                 ],
             ],
+        ],
+    ],
+    'acl' => [
+        'guest' => [
+        ],
+        'member' => [
+            'training/default' => ['index','create','update','delete','assign','unassign','find'],
+            'training/config' => ['index','clear','create', 'createfolders','importclasses'],
         ],
     ],
     'controllers' => [
