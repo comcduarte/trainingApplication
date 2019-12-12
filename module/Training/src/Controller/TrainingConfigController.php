@@ -201,6 +201,7 @@ class TrainingConfigController extends AbstractConfigController
                         /** I Have the Employee **/
                         
                         $class = new TrainingModel($this->adapter);
+                        $class->setCurrentUser('SYSTEM');
                         $result = NULL;
                         
                         $result = $class->read(['NAME' => $record[$NAME], 'DATE_SCHEDULE' => date('Y-m-d', strtotime($record[$DATE]))  . 'T12:00']);
@@ -217,7 +218,6 @@ class TrainingConfigController extends AbstractConfigController
                             $class->DATE_SCHEDULE = date('Y-m-d', strtotime($record[$DATE])) . 'T12:00';
                             $class->CATEGORY = $record[$CAT];
                             $class->NAME = $record[$NAME];
-                            $class->setCurrentUser('SYSTEM');
                             $class->create();
                         }
                         
