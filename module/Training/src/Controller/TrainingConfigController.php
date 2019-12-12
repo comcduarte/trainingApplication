@@ -14,6 +14,7 @@ use Zend\Db\Sql\Ddl\Constraint\PrimaryKey;
 use Zend\View\Model\ViewModel;
 use Employee\Model\EmployeeModel;
 use Training\Model\TrainingModel;
+use Zend\Db\Sql\Ddl\Column\Text;
 
 class TrainingConfigController extends AbstractConfigController
 {
@@ -89,6 +90,26 @@ class TrainingConfigController extends AbstractConfigController
         
         $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
         unset($ddl);
+        
+        /******************************
+         * HISTORY
+         ******************************/
+        $ddl = new CreateTable('history');
+        
+        $ddl->addColumn(new Varchar('UUID', 36));
+        
+        $ddl->addColumn(new Varchar('ACTION', 10));
+        $ddl->addColumn(new Varchar('USER', 36));
+        $ddl->addColumn(new Datetime('DATETIME', TRUE));
+        $ddl->addColumn(new Varchar('TABLENAME', 255, TRUE));
+        $ddl->addColumn(new Text('QUERY', NULL, TRUE));
+        
+        $ddl->addConstraint(new PrimaryKey('UUID'));
+        
+        $this->adapter->query($sql->buildSqlString($ddl), $this->adapter::QUERY_MODE_EXECUTE);
+        unset($ddl);
+        
+        
     }
     
     public function createfoldersAction()
