@@ -1,9 +1,11 @@
 <?php
 namespace Employee\Controller;
 
+use Annotation\Model\AnnotationModel;
 use Employee\Form\FindEmployeeForm;
 use Employee\Model\EmployeeModel;
 use Midnet\Controller\AbstractBaseController;
+use User\Model\UserModel;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Join;
 use Zend\Db\Sql\Select;
@@ -113,6 +115,35 @@ class EmployeeController extends AbstractBaseController
         $reports = $resultSet->toArray();
         
         $view->setVariable('reports', $reports);
+        
+        /****************************************
+         * ANNOTATIONS
+         ****************************************/
+        $annotation = new AnnotationModel($this->adapter);
+        $where = new Where([
+            new Like('TABLENAME', $this->model->getTableName()),
+            new Like('PRIKEY', $this->model->UUID),
+        ]);
+        $annotations = $annotation->fetchAll($where, ['DATE_CREATED DESC']);
+        $notes = [];
+        foreach ($annotations as $annotation) {
+            $user = new UserModel($this->adapter);
+            $user->read(['UUID' => $annotation['USER']]);
+            
+            $notes[] = [
+                'USER' => $user->USERNAME,
+                'ANNOTATION' => $annotation['ANNOTATION'],
+                'DATE_CREATED' => $annotation['DATE_CREATED'],
+            ];
+        }
+        $view->setVariables([
+            'annotations' => $notes,
+            'annotations_prikey' => $this->model->UUID,
+            'annotations_tablename' => $this->model->getTableName(),
+            'annotations_user' => '',
+        ]);
+        
+        
         
         return $view;
     }
