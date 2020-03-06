@@ -1,10 +1,12 @@
 <?php
 namespace Training\Controller;
 
+use Annotation\Model\AnnotationModel;
 use Midnet\Controller\AbstractBaseController;
 use Midnet\Model\Uuid;
 use Training\Form\FindTrainingForm;
 use Training\Model\TrainingModel;
+use User\Model\UserModel;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Join;
@@ -120,6 +122,33 @@ class TrainingController extends AbstractBaseController
         $reports = $resultSet->toArray();
         
         $view->setVariable('reports', $reports);
+        
+        /****************************************
+         * ANNOTATIONS
+         ****************************************/
+        $annotation = new AnnotationModel($this->adapter);
+        $where = new Where([
+            new Like('TABLENAME', $this->model->getTableName()),
+            new Like('PRIKEY', $this->model->UUID),
+        ]);
+        $annotations = $annotation->fetchAll($where, ['DATE_CREATED DESC']);
+        $notes = [];
+        foreach ($annotations as $annotation) {
+            $user = new UserModel($this->adapter);
+            $user->read(['UUID' => $annotation['USER']]);
+            
+            $notes[] = [
+                'USER' => $user->USERNAME,
+                'ANNOTATION' => $annotation['ANNOTATION'],
+                'DATE_CREATED' => $annotation['DATE_CREATED'],
+            ];
+        }
+        $view->setVariables([
+            'annotations' => $notes,
+            'annotations_prikey' => $this->model->UUID,
+            'annotations_tablename' => $this->model->getTableName(),
+            'annotations_user' => '',
+        ]);
         
         return $view;
     }

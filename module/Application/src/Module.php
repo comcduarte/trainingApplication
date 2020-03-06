@@ -9,7 +9,7 @@ namespace Application;
 
 class Module
 {
-    const VERSION = 'DEV';
+    const VERSION = 'v0.1';
     const TITLE = "Training Attendance";
 
     public function getConfig()

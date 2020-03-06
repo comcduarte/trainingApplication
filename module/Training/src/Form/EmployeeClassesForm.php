@@ -2,8 +2,8 @@
 namespace Training\Form;
 
 use Midnet\Form\AbstractBaseForm;
-use Midnet\Form\Element\DatabaseSelectObject;
 use Midnet\Model\Uuid;
+use Training\Form\Element\AbstractDatabaseSelect;
 use Zend\Db\Adapter\AdapterAwareTrait;
 use Zend\Form\Element\Hidden;
 
@@ -38,7 +38,7 @@ class EmployeeClassesForm extends AbstractBaseForm
         
         $this->add([
             'name' => 'EMP',
-            'type' => DatabaseSelectObject::class,
+            'type' => AbstractDatabaseSelect::class,
             'attributes' => [
                 'class' => 'form-control',
                 'id' => 'USER',
@@ -48,7 +48,10 @@ class EmployeeClassesForm extends AbstractBaseForm
                 'database_adapter' => $this->adapter,
                 'database_table' => 'employees',
                 'database_id_column' => 'UUID',
-                'database_value_column' => 'LNAME',
+                'database_value_columns' => [
+                    'LNAME',
+                    'FNAME'
+                ],
             ],
             
         ]);
