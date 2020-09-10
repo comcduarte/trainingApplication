@@ -1,0 +1,23 @@
+<table class="table table-striped table-sm">
+	<thead>
+		<tr>
+	<?php 
+	   $header = array_keys($this->data[0]); 
+	   foreach ($header as $key) {
+	       if (strpos($key, $this->primary_key) === 0 ) { continue; }
+	       echo "<th>$key</th>";
+	   }
+   ?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($this->data as $record) : ?>
+		<tr>
+			<?php foreach ($record as $key => $value) : ?>
+				<?php if (strpos($key, $this->primary_key) === 0 ) { continue; } ?>
+				<td><?php echo $value; ?></td>
+			<?php endforeach; ?>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>

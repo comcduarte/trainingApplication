@@ -1,0 +1,110 @@
+<div class="row">
+	<div class="col-md">    
+        <div class="card mb-4">
+        <?php
+        $this->form->prepare();
+        echo $this->form()->openTag($form);
+        ?>
+        	<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Update</b>
+        		</div>
+        		<div>
+        			<a href="" class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#modalForm">Assign Employee</a>
+        		</div>
+        		
+        	</div>
+        	
+        	<div class="card-body">
+        		<?php echo $this->formCollection($this->form); ?>
+        	</div>
+        <?php echo $this->form()->closeTag($this->form); ?>
+        </div>  
+    </div>
+    <div class="col-md">
+    	<div class="row mb-4">
+    		<div class="col" style="max-height: 350px; overflow-y: auto;">
+            	<?php echo $this->partial('midnet/subtable', [
+            	    'title' => 'Employee Roster',
+            	    'data' => $this->roster,
+            	    'primary_key' => 'UUID',
+            	    'route' => 'training/default',
+            	    'params' => [
+            	        [
+            	            'key' => 'UUID_E',
+            	            'action' => 'update',
+            	            'route' => 'employee/default',
+            	            'label' => 'Update',
+            	        ],
+            	        [
+            	            'key' => 'UUID',
+            	            'action' => 'unassign',
+            	            'route' => 'training/default',
+            	            'label' => 'Unassign',
+            	        ],
+            	    ],
+            	])?>
+    		</div>
+    	</div>
+    	<div class="row mb-4">
+    		<div class="col" style="max-height: 350px; overflow-y: auto;">
+            	<?php echo $this->partial('related_files', [
+            	    'title' => 'Related Files',
+            	    'data' => $this->files,
+            	    'primary_key' => 'UUID',
+            	    'route' => 'training/default',
+            	    'params' => [
+            	        [
+            	            'key' => 'UUID',
+            	            'action' => 'display',
+            	            'route' => 'data',
+            	            'label' => 'View',
+            	        ],
+            	    ],
+            	])?>
+    		</div>
+    	</div>
+    	<div class="row mb-4">
+    		<div class="col" style="max-height: 350px; overflow-y: auto;">
+            	<?php echo $this->partial('training/context_report', [
+            	    'title' => 'Reports',
+            	    'data' => $this->reports,
+            	    'primary_key' => 'UUID',
+            	    'route' => 'reports/default',
+            	    'params' => [
+            	        [
+            	            'key' => 'UUID',
+            	            'action' => 'view',
+            	            'route' => 'reports/default',
+            	            'label' => 'View',
+            	            'num_vars' => 1,
+            	            'vars' => [
+            	                'FIELD0' => 'classes.UUID',
+            	                'VALUE0' => $this->uuid,
+            	            ],
+            	        ],
+            	    ],
+            	])?>
+    		</div>
+    	</div>
+    </div>
+</div>
+<?php echo $this->annotations()->setAnnotations($annotations)->render(); ?>
+
+<!-- MODAL FORM -->
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalForm" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<?php 
+		$employee_classes_form->prepare();
+		$employee_classes_form->setAttribute('action', $this->url('training/default', ['action' => 'assign']));
+		
+		$employee_classes_form->get('CLASS')->setAttributes(['value' => $this->uuid]);
+		
+		echo $this->form()->openTag($employee_classes_form);
+		echo $this->formCollection($employee_classes_form);
+		echo $this->form()->closeTag($employee_classes_form);
+		?>
+		</div>
+	</div>
+</div>

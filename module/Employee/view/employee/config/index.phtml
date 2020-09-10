@@ -1,0 +1,41 @@
+<?php $this->headLink()->prependStylesheet($this->basePath('css/b-flat.css')); ?>
+
+<div class="row">
+	<div class="col">
+		<div class="card mb-4">
+			<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Checks</b>
+        		</div>
+        	</div>
+        	<div class="card-body">
+        		Hello World
+        	</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<div class="card mb-4">
+			<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Forms</b>
+        		</div>
+        	</div>
+        	<div class="card-body">
+        		<?php 
+        		$this->importForm->prepare();
+        		$this->importForm->setAttribute('action', $this->url('employee/config', ['action' => 'importemployees']));
+        		echo $this->form()->openTag($this->importForm); 
+        		echo $this->formCollection($this->importForm);
+        		echo $this->form()->closeTag($this->importForm);
+        		?>
+        		<HR>
+        		<a href="<?=$this->url('employee/config', ['action'=>'clear'])?>" class="btn btn-danger">Truncate Database Tables</a>
+				<a href="<?=$this->url('employee/config', ['action'=>'create'])?>" class="btn btn-primary">Populate Database Tables</a>
+        		<a href="<?=$this->url('employee/config', ['action'=>'reconciledirectories'])?>" class="btn btn-primary">Reconcile Directories</a>
+        	</div>
+		</div>
+	</div>
+</div>

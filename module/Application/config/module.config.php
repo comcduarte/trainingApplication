@@ -7,9 +7,10 @@
 
 namespace Application;
 
+use Application\Controller\IndexController;
+use Application\Controller\Factory\IndexControllerFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -36,9 +37,16 @@ return [
             ],
         ],
     ],
+    'acl' => [
+        'guest' => [
+        ],
+        'member' => [
+            'home' => ['index'],
+        ],
+    ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+            IndexController::class => IndexControllerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -48,7 +56,7 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout'           => __DIR__ . '/../../User/view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
