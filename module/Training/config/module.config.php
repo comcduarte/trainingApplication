@@ -5,14 +5,15 @@ use Training\Controller\TrainingConfigController;
 use Training\Controller\TrainingController;
 use Training\Controller\Factory\TrainingConfigControllerFactory;
 use Training\Controller\Factory\TrainingControllerFactory;
+use Training\Form\MassUploadForm;
 use Training\Form\TrainingForm;
 use Training\Form\Factory\EmployeeClassesFormFactory;
+use Training\Form\Factory\MassUploadFormFactory;
 use Training\Form\Factory\TrainingFormFactory;
 use Training\Service\Factory\TrainingModelPrimaryAdapterFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
-use Training\Form\Factory\FindTrainingFormFactory;
 
 return [
     'router' => [
@@ -60,7 +61,7 @@ return [
         ],
         'member' => [
             'training/default' => ['index','create','update','delete','assign','unassign','find'],
-            'training/config' => ['index','clear','create', 'createfolders','importclasses'],
+            'training/config' => ['index','clear','create', 'createfolders','importclasses', 'importfiles','createsymlink'],
         ],
     ],
     'controllers' => [
@@ -73,6 +74,7 @@ return [
         'factories' => [
             TrainingForm::class => TrainingFormFactory::class,
             EmployeeClassForm::class => EmployeeClassesFormFactory::class,
+            MassUploadForm::class => MassUploadFormFactory::class,
         ],
     ],
     'navigation' => [

@@ -2,7 +2,7 @@
 
 <a href="<?=$this->url($this->route, ['action'=>'clear'])?>" class="btn btn-danger">Truncate Database Tables</a>
 <a href="<?=$this->url($this->route, ['action'=>'create'])?>" class="btn btn-primary">Populate Database Tables</a>
-
+<a href="<?=$this->url($this->route, ['action'=>'createsymlink'])?>" class="btn btn-primary">Create Symbolic Link to Data</a>
 <?php if (!file_exists('./data/files')) { ?>
 	<p>
     	Files Directory does not Exist
@@ -87,6 +87,22 @@ $checks = [
         		echo $this->form()->openTag($this->importForm); 
         		echo $this->formCollection($this->importForm);
         		echo $this->form()->closeTag($this->importForm);
+        		?>
+        	</div>
+		</div>
+		<div class="card mb-4">
+			<div class="card-header d-flex justify-content-between">
+        		<div>
+        			<b>Import Related Files</b>
+        		</div>
+        	</div>
+        	<div class="card-body">
+        		<?php 
+        		$this->mass_upload_form->prepare();
+        		$this->mass_upload_form->setAttribute('action', $this->url('training/config', ['action' => 'importfiles']));
+        		echo $this->form()->openTag($this->mass_upload_form);
+        		echo $this->formCollection($this->mass_upload_form);
+        		echo $this->form()->closeTag($this->mass_upload_form);
         		?>
         	</div>
 		</div>

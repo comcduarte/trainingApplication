@@ -18,6 +18,8 @@ use Zend\Db\Sql\Ddl\Column\Text;
 
 class TrainingConfigController extends AbstractConfigController
 {
+    public $mass_upload_form;
+    
     public function __construct()
     {
         $this->setRoute('training/config');
@@ -33,6 +35,7 @@ class TrainingConfigController extends AbstractConfigController
         $importForm->addInputFilter();
         $view->setVariable('importForm', $importForm);
         
+        $view->setVariable('mass_upload_form', $this->mass_upload_form);
         $view->setTemplate('training/config');
         
         return $view;
@@ -124,6 +127,107 @@ class TrainingConfigController extends AbstractConfigController
         if (!file_exists('./data/files')) {
             mkdir('./data/files', 0777, true);
         }
+    }
+    
+    public function createsymlinkAction()
+    {
+        if (!file_exists('./public/data')) {
+            symlink('./public/data', 'data');
+        }
+        
+        $url = $this->getRequest()->getHeader('Referer')->getUri();
+        return $this->redirect()->toUrl($url);
+    }
+    
+    public function importfilesAction()
+    {
+        $directory = './data/import/';
+        $url = $this->getRequest()->getHeader('Referer')->getUri();
+        
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        
+        $session_uuid = "";
+        $file_field = "";
+        $new_file_name = "";
+        
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $post = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+                );
+            $session_uuid = $post['SESSION'];
+            $file_field = $post['FIELD'];
+            $new_file_name = $post['NAME'];
+            
+            $this->flashMessenger()->addSuccessMessage('Auto-assign to ' . $session_uuid);
+            $this->flashMessenger()->addSuccessMessage('File > Field: ' . $file_field);
+            $this->flashMessenger()->addSuccessMessage('New File Name: ' . $new_file_name);
+        }
+        
+        if ($handle = opendir($directory)) {
+            while (FALSE !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != "..") {
+                    $this->flashMessenger()->addSuccessMessage($entry . " file found.");
+                    
+                    $FILEID = substr($entry, 0, stripos($entry, '.pdf'));
+                    $this->flashMessenger()->addSuccessMessage($FILEID . " searching...");
+                    
+                    $employee = new EmployeeModel($this->adapter);
+                    $retval = $employee->read([$file_field => $FILEID]);
+                    
+                    if ($retval) {
+                        $this->flashMessenger()->addSuccessMessage($FILEID . " retrieved. " . $employee->EMAIL);
+                    } else {
+                        $this->flashMessenger()->addErrorMessage($FILEID . " not found. Exiting.");
+                        continue;
+                    }
+                        
+                    
+                    $destination = "";
+                    if (file_exists('./data/files/' . $employee->UUID)) {
+                        $destination = './data/files/' . $employee->UUID;
+                        $this->flashMessenger()->addSuccessMessage($employee->UUID . " folder exists.");
+                    } else {
+                        $this->flashMessenger()->addErrorMessage($employee->UUID . " not found. Exiting.");
+                        continue;
+                    }
+                    
+                    $filename = "/$new_file_name.pdf";
+                    
+                    $this->flashMessenger()->addSuccessMessage("Attempting relocation of file...");
+                    
+                    $oldname = $directory . $FILEID . ".pdf";
+                    $newname = $destination . $filename;
+                    rename($oldname, $newname);
+                    $this->flashMessenger()->addSuccessMessage("rename($oldname, $newname);");
+
+                    if (file_exists($newname)) {
+                        $this->flashMessenger()->addSuccessMessage("File moved successfully");
+                    } else {
+                        $this->flashMessenger()->addErrorMessage("File not moved.");
+                        continue;
+                    }
+                    
+                    $session = new TrainingModel($this->adapter);
+                    $retval = $session->read(['UUID' => $session_uuid]);
+                    if ($retval) {
+                        $this->flashMessenger()->addSuccessMessage($session->NAME . " retrieved. ");
+                    } else {
+                        $this->flashMessenger()->addErrorMessage("Session not found.");
+                        continue;
+                    }
+                    
+                    $session->assignEmployee($employee->UUID);
+                    $this->flashMessenger()->addSuccessMessage($employee->EMAIL . ' added to ' . $session->NAME);
+                    
+                }
+            }
+        }
+        $url = $this->getRequest()->getHeader('Referer')->getUri();
+        return $this->redirect()->toUrl($url);
     }
     
     public function importclassesAction()
