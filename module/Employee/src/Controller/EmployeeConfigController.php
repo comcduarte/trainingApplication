@@ -167,7 +167,6 @@ class EmployeeConfigController extends AbstractConfigController
                 $today = $date->format('Y-m-d H:i:s');
                 
                 $data = $form->getData();
-                // $records = file($data['FILE']['tmp_name']);
                 
                 $row = 0;
                 if (($handle = fopen($data['FILE']['tmp_name'],"r")) !== FALSE) {
@@ -196,6 +195,9 @@ class EmployeeConfigController extends AbstractConfigController
                         $emp = new EmployeeModel($this->adapter);
                         $result = $emp->read(['EMP_NUM' => sprintf('%06d', $record[$EMP_NUM])]);
                         if ($emp->UUID === NULL) {
+                            /**
+                             * Create New Employee Record
+                             */
                             $emp->UUID = $uuid->generate()->value;
                             $emp->EMP_NUM = sprintf('%06d', $record[$EMP_NUM]);
                             $emp->FNAME = $record[$FNAME];
@@ -208,7 +210,21 @@ class EmployeeConfigController extends AbstractConfigController
                             $emp->DATE_MODIFIED = $today;
                             $emp->STATUS = $emp::ACTIVE_STATUS;
                             $emp->setCurrentUser('SYSTEM');
-                            $create_result = $emp->create();
+                            $emp->create();
+                        } else {
+                            /**
+                             * Update Existing Employee Record
+                             */
+                            $emp->FNAME = $record[$FNAME];
+                            $emp->LNAME = $record[$LNAME];
+                            $emp->EMAIL = $record[$FNAME] . '.' . $record[$LNAME] . '@middletownct.gov';
+                            $emp->DEPT = $current_dept;
+                            $emp->TIME_GROUP = sprintf('%03d', $record[$PTG]);
+                            $emp->TIME_SUBGROUP = sprintf('%03d', $record[$PTSG]);
+                            $emp->DATE_MODIFIED = $today;
+                            $emp->STATUS = $emp::ACTIVE_STATUS;
+                            $emp->setCurrentUser('SYSTEM');
+                            $emp->update();
                         }
                         $row++;
                     }
